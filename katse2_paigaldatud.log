@@ -1,0 +1,17 @@
+apache2 on juba paigaldatud.
+● apache2.service - The Apache HTTP Server
+     Loaded: loaded (/usr/lib/systemd/system/apache2.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2026-10-27 09:07:48 UTC; 48s ago
+       Docs: https://httpd.apache.org/docs/2.4/
+   Main PID: 2073 (apache2)
+      Tasks: 55 (limit: 9431)
+     Memory: 5.4M (peak: 5.9M)
+        CPU: 49ms
+     CGroup: /system.slice/apache2.service
+             ├─2073 /usr/sbin/apache2 -k start
+             ├─2075 /usr/sbin/apache2 -k start
+             └─2076 /usr/sbin/apache2 -k start
+
+Oct 27 09:07:48 ls-roger systemd[1]: Starting apache2.service - The Apache HTTP Server...
+Oct 27 09:07:48 ls-roger apachectl[2072]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' directive globally to suppress this message
+Oct 27 09:07:48 ls-roger systemd[1]: Started apache2.service - The Apache HTTP Server.
