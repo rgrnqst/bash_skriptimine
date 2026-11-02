@@ -1,0 +1,27 @@
+apache2 on juba paigaldatud.
+php on juba paigaldatud.
+libapache2-mod-php on juba paigaldatud.
+php-mysql on juba paigaldatud.
+/usr/bin/php
+PHP 8.3.6 (cli) (built: Oct 19 2026 15:16:58) (NTS)
+php moodul on apache2 sees laaditud.
+● apache2.service - The Apache HTTP Server
+     Loaded: loaded (/usr/lib/systemd/system/apache2.service; enabled; preset: enabled)
+     Active: active (running) since Mon 2026-11-02 09:05:00 UTC; 35s ago
+       Docs: https://httpd.apache.org/docs/2.4/
+    Process: 8750 ExecStart=/usr/sbin/apachectl start (code=exited, status=0/SUCCESS)
+   Main PID: 8753 (apache2)
+      Tasks: 6 (limit: 9431)
+     Memory: 10.8M (peak: 11.4M)
+        CPU: 60ms
+     CGroup: /system.slice/apache2.service
+             ├─8753 /usr/sbin/apache2 -k start
+             ├─8758 /usr/sbin/apache2 -k start
+             ├─8759 /usr/sbin/apache2 -k start
+             ├─8760 /usr/sbin/apache2 -k start
+             ├─8761 /usr/sbin/apache2 -k start
+             └─8762 /usr/sbin/apache2 -k start
+
+Nov 02 09:05:00 ls-roger systemd[1]: Starting apache2.service - The Apache HTTP Server...
+Nov 02 09:05:00 ls-roger apachectl[8752]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' directive globally to suppress this message
+Nov 02 09:05:00 ls-roger systemd[1]: Started apache2.service - The Apache HTTP Server.
