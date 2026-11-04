@@ -58,5 +58,65 @@ fi
 if on_paigaldatud mysql-community-server; then
     echo "MySQL server on juba paigaldatud."
 else
-    echo "MySQL server ei ole paigaldatud."
+    echo "MySQL server ei ole paigaldatud, paigaldan."
+
+    # Vastused mysql-apt-config kusimustele: serveri versioon 8.0,
+    # tools pakette ei lisa, valiku kinnitus
+    echo "mysql-apt-config mysql-apt-config/select-server select mysql-8.0" | debconf-set-selections
+    echo "mysql-apt-config mysql-apt-config/select-tools select Disabled" | debconf-set-selections
+    echo "mysql-apt-config mysql-apt-config/select-product select Ok" | debconf-set-selections
+
+    # Vastused serveri kusimustele: root parool kaks korda ja autentimine
+    echo "mysql-community-server mysql-community-server/root-pass password $ROOT_PAROOL" | debconf-set-selections
+    echo "mysql-community-server mysql-community-server/re-root-pass password $ROOT_PAROOL" | debconf-set-selections
+    echo "mysql-community-server mysql-server/default-auth-override select Use Strong Password Encryption (RECOMMENDED)" | debconf-set-selections
+
+    # Oracle APT repositoorium lisatakse mysql-apt-config paketiga
+    if on_paigaldatud mysql-apt-config; then
+        echo "mysql-apt-config on juba paigaldatud."
+    else
+        wget -q -O "/tmp/$CONF_PAKETT" "$CONF_URL"
+        dpkg -i "/tmp/$CONF_PAKETT"
+    fi
+
+    # Uus repositoorium tuleb sisse lugeda, siis paigaldame serveri
+    apt-get update -q
+    apt-get install -y -q mysql-server
 fi
+
+# 3. Teenus tootab kohe ja kaivitub koos susteemiga
+systemctl enable --now mysql
+if systemctl is-active --quiet mysql; then
+    echo "MySQL teenus tootab."
+else
+    echo "Viga: MySQL teenus ei toota."
+    exit 1
+fi
+
+# 4. .my.cnf, et root ei peaks mysql kasuga parooli sisestama
+if [ -f "$MY_CNF" ]; then
+    echo "$MY_CNF on juba olemas."
+else
+    cat > "$MY_CNF" <<EOF
+[client]
+host=localhost
+user=root
+password=$ROOT_PAROOL
+EOF
+    echo "$MY_CNF loodud."
+fi
+# Failis on parool, seega tohib seda lugeda ainult root
+chmod 600 "$MY_CNF"
+
+# 5. Lopukontroll
+if mysql --version | grep -q "Ver 8\.0\."; then
+    echo "MySQL versioon on 8.0."
+else
+    echo "Viga: MySQL versioon ei ole 8.0."
+    exit 1
+fi
+mysql --version
+echo "Teenus: $(systemctl is-active mysql), automaatkaivitus: $(systemctl is-enabled mysql)"
+ls -l "$MY_CNF"
+# mysql votab parooli .my.cnf failist
+mysql -e "SELECT CURRENT_USER(), VERSION();"
