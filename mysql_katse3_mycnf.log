@@ -1,0 +1,16 @@
+--- ilma .my.cnf failita:
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+--- skript:
+wget on juba paigaldatud.
+ca-certificates on juba paigaldatud.
+gnupg on juba paigaldatud.
+debconf-utils on juba paigaldatud.
+MySQL server on juba paigaldatud.
+MySQL teenus tootab.
+/root/.my.cnf loodud.
+MySQL versioon on 8.0.
+mysql  Ver 8.0.46 for Linux on x86_64 (MySQL Community Server - GPL)
+Teenus: active, automaatkaivitus: enabled
+-rw------- 1 root root 50 Nov  4 11:21 /root/.my.cnf
+CURRENT_USER()	VERSION()
+root@localhost	8.0.46
